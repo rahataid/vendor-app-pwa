@@ -18,8 +18,6 @@ const api = axios.create({
   // paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
 });
 
-// console.log("token", accessToken);
-
 api.interceptors.response.use(
   (response) => response,
   (error) =>

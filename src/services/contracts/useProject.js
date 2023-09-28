@@ -19,14 +19,6 @@ export const useProject = () => {
   const { handleContractError } = useErrorHandler();
 
   const allContractsLoaded = contract && communityContract && RahatToken ? true : false;
-  console.log('USE PROJECT RESPONSE', {
-    allContractsLoaded,
-    contract,
-    communityContract,
-    contractWS,
-    RahatToken,
-    RahatClaim,
-  });
   return {
     contractWS,
     contract,
@@ -41,14 +33,12 @@ export const useProject = () => {
       // (await RahatToken?.balanceOf(walletAddress))?.toNumber();
       let balance = await RahatToken?.balanceOf(walletAddress);
       balance = balance?.toNumber();
-      console.log('Get Balance Called walletaddress, balance', walletAddress, balance);
       return balance;
     },
 
     getBeneficiaryBalance: async (walletAddress) => {
       let balance = await contract?.beneficiaryClaims(walletAddress);
       balance = balance?.toString();
-      console.log('Beneficiary Balance', balance);
       return balance;
     },
 
@@ -68,7 +58,6 @@ export const useProject = () => {
       const vendorRole = await communityContract?.VENDOR_ROLE();
       // return communityContract?.hasRole(vendorRole, vendorAddress);
       const casess = await communityContract?.hasRole(vendorRole, vendorAddress);
-      console.log('Is vendor approved?', casess, vendorRole, vendorAddress);
       return casess;
     },
 

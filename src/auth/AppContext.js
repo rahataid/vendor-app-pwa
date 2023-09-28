@@ -65,7 +65,6 @@ AppProvider.propTypes = {
 
 const localUser = getCurrentUser();
 
-console.log('local storage user ==>', localUser);
 const localKey = getKey();
 
 function AppProvider({ children }) {
@@ -105,11 +104,9 @@ function AppProvider({ children }) {
     const initialize = async () => {
       try {
         let wallet = await getWallet();
-        console.log('Local storage wallet ==>', wallet);
 
         if (wallet) {
           const { blockchainSettings, contractAddresses } = await getAppSettings();
-          console.log('GET APP SETTINGS', blockchainSettings, contractAddresses);
           wallet = wallet?.connect(
             new providers.StaticJsonRpcProvider(blockchainSettings?.rpcUrl, {
               chainId: blockchainSettings?.chainId,
@@ -160,7 +157,6 @@ function AppProvider({ children }) {
   };
 
   const addUser = (user) => {
-    console.log('=======> ADD USER LOCAL STORAGE');
     setAppState((prev) => ({ ...prev, user }));
     saveCurrentUser(user);
   };
@@ -211,3 +207,4 @@ function AppProvider({ children }) {
 }
 
 export { AppContext, AppProvider };
+

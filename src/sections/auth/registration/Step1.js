@@ -50,7 +50,6 @@ const Step1 = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log('ON SUBMIT CALLED');
       const res = await handleRegisterForm(data);
       if (res.address) {
         const mnemonic = res._mnemonic();

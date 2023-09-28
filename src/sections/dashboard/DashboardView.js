@@ -17,12 +17,10 @@ import { useSnackbar } from 'notistack';
 import Transactions from './Transactions';
 
 const DashboardView = () => {
-  console.log('\nDashboard Rendered');
   const snackBar = useSnackbar();
   const router = useRouter();
   const { getVendorInfo, vendorInfo } = useDashboardContext();
   const { user, setClaimId, wallet, addUser, hasEnoughEth } = useAppContext();
-  console.log('USER, WALLET, hasEnoughEth FROM APP CONTEXT', user, wallet, hasEnoughEth);
   const { handleError, throwError } = useErrorHandler();
 
   const {
@@ -56,17 +54,8 @@ const DashboardView = () => {
     isApproved: false,
   });
 
-  console.log('VENDOR INFO', vendorInfo);
-
   const getChainData = useCallback(async () => {
     setFetchingChainData(true);
-    console.log(
-      'getChainData called. CVA, community contract, RahatToken CONTRACT EXISTS?',
-      { CVAProjectContract, communityContract, RahatToken },
-      CVAProjectContract !== null,
-      communityContract !== null,
-      RahatToken !== null
-    );
     if (!CVAProjectContract || !communityContract || !RahatToken) return;
     const allowance = await getVendorAllowance(user?.walletAddress);
     const pendingWheels = await pendingWheelsToAccept(user?.walletAddress);
@@ -74,7 +63,6 @@ const DashboardView = () => {
     const projectLocked = await isProjectLocked();
     const isApproved = await isVendorApproved(user?.walletAddress);
 
-    console.log('CHAIN DATA', allowance, pendingWheels, balance, projectLocked, isApproved);
     setChainData({ allowance, pendingWheelsToAccept: pendingWheels, disbursed: balance, projectLocked, isApproved });
     setFetchingChainData(false);
   }, [chargeBeneficiaryModal, acceptingAllowance, user, chainData, CVAProjectContract, communityContract, RahatToken]);
@@ -115,12 +103,6 @@ const DashboardView = () => {
 
   useEffect(() => {
     const init = async () => {
-      console.log('USE EFFECT Get chain data', {
-        walletAddress: user?.walletAddress,
-        CVAProjectContract,
-        communityContract,
-        RahatToken,
-      });
       if (user?.walletAddress && CVAProjectContract && communityContract && RahatToken) {
         await getChainData();
       }
@@ -231,7 +213,6 @@ const DashboardView = () => {
       // The claimId is the claimId of the beneficiary
 
       try {
-        console.log('CHARGE BY PHONE SUBMIT');
         // 1. Set charging beneficiary to true
         setChargingBeneficiary(true);
 
@@ -278,15 +259,12 @@ const DashboardView = () => {
         // 1. Set charging beneficiary to true
         setChargingBeneficiary(true);
         const walletAddress = chargeBeneficiaryInputQr;
-        console.log('HANDLE CHARGE SUBMIT QR CALLED', walletAddress);
 
         // 2. Check if the address is registered as a beneficiary
         const allBeneficiary = await BeneficiaryService.getBeneficiaryByWalletAddress(walletAddress);
-        console.log('ALL BENEFICIARY', allBeneficiary);
         const {
           data: { rows: BeneficiaryData },
         } = allBeneficiary;
-        console.log('BeneficiaryData.length', BeneficiaryData?.length);
         if (!BeneficiaryData?.length) {
           setChargingBeneficiary(false);
           snackBar.enqueueSnackbar('Beneficiary does not exist', { variant: 'error' });

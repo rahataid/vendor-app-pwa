@@ -20,14 +20,12 @@ export const AuthProvider = ({ children }) => {
 
   const handleRegisterForm = async (data) => {
     try {
-      console.log('INSIDE AUTH JS');
       const walletValue = Web3Utils.createRandomWallet(data?.phone);
       const createData = {
         ...data,
         walletAddress: walletValue?.address,
       };
       const vendor = await VendorService.addVendor(createData);
-      console.log(vendor);
       saveWalletInfo(await walletValue.encrypt(DEFAULT_PASSCODE, { scrypt: { N: 2 } }));
 
       addUser(vendor.data);
