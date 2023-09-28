@@ -41,5 +41,5 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: esatya/tayaba-vendor:main
+          tags: esatya/vendor-app-pwa:main
           
