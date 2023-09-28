@@ -13,7 +13,7 @@ RUN yarn build
 
 # Production image, copy all the files and run next
 FROM node:18.12.1-alpine3.17 AS runner
-WORKDIR /opt/app
+WORKDIR /usr/src/app
 ENV NODE_ENV=production
 COPY --from=builder /opt/app/next.config.js ./
 COPY --from=builder /opt/app/public ./public
