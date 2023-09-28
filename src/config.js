@@ -1,30 +1,35 @@
 // routes
-import { PATH_DASHBOARD } from './routes/paths';
+import { PATH_DASHBOARD } from "./routes/paths";
 
 // API
 // ----------------------------------------------------------------------
 
-export const DEBUG_MODE = process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_DEBUG_MODE : false;
-export const HOST_API = process.env.NEXT_PUBLIC_HOST_API || '';
-export const RAHAT_BACKEND = process.env.NEXT_PUBLIC_RAHAT_BACKEND_API;
+export const DEBUG_MODE =
+  process.env.NODE_ENV === "development"
+    ? process.env.NEXT_PUBLIC_DEBUG_MODE
+    : false;
+export const HOST_API = process.env.NEXT_PUBLIC_HOST_API || "";
+export const RAHAT_BACKEND = process.env.NEXT_PUBLIC_RAHAT_BACKEND_API || "";
 // export const TAYABA_BACKEND = DEBUG_MODE
 //   ? process.env.NEXT_PUBLIC_TAYABA_BACKEND_PROXY
 //   : process.env.NEXT_PUBLIC_TAYABA_BACKEND;
 
-export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'Rahat';
+export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Rahat";
 
-export const DEFAULT_PASSCODE = process.env.NEXT_PUBLIC_DEFAULT_PASSCODE || '9670';
+export const DEFAULT_PASSCODE =
+  process.env.NEXT_PUBLIC_DEFAULT_PASSCODE || "9670";
 
-export const WSS_SERVER = HOST_API.replace('http', 'ws');
+export const WSS_SERVER = HOST_API.replace("http", "ws");
 
-export const BLOCKCHAIN_EXPLORER = process.env.NEXT_PUBLIC_BLOCKCHAIN_EXPLORER || '';
+export const BLOCKCHAIN_EXPLORER =
+  process.env.NEXT_PUBLIC_BLOCKCHAIN_EXPLORER || "";
 
-export const CHAINCACHE_URL = process.env.NEXT_PUBLIC_CHAINCACHE_URL || '';
-export const CHAINCACHE_APPID = process.env.NEXT_PUBLIC_CHAINCACHE_APPID || '';
+export const CHAINCACHE_URL = process.env.NEXT_PUBLIC_CHAINCACHE_URL || "";
+export const CHAINCACHE_APPID = process.env.NEXT_PUBLIC_CHAINCACHE_APPID || "";
 
-export const FLICKR_APIKEY = process.env.NEXT_PUBLIC_FLICKR_APIKEY || '';
-export const FLICKR_PHOTOSET = process.env.NEXT_PUBLIC_FLICKR_PHOTOSET || '';
-export const IPFS_GATEWAY = process.env.NEXT_PUBLIC_IPFS_GATEWAY || '';
+export const FLICKR_APIKEY = process.env.NEXT_PUBLIC_FLICKR_APIKEY || "";
+export const FLICKR_PHOTOSET = process.env.NEXT_PUBLIC_FLICKR_PHOTOSET || "";
+export const IPFS_GATEWAY = process.env.NEXT_PUBLIC_IPFS_GATEWAY || "";
 
 export const COGNITO_API = {
   userPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
@@ -39,9 +44,9 @@ export const AUTH0_API = {
 export const MAPBOX_API = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 export const WSS_EVENTS = {
-  welcome: 'welcome',
-  notification: 'notification',
-  rahat_claimed: 'rahat_claimed',
+  welcome: "welcome",
+  notification: "notification",
+  rahat_claimed: "rahat_claimed",
 };
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
@@ -81,33 +86,33 @@ export const SPACING = {
 };
 
 export const ROLES = {
-  AGENCY: 'Admin',
-  DONOR: 'Donor',
-  MANAGER: 'Manager',
-  MOBILIZER: 'Mobilizer',
-  PALIKA: 'Palika',
+  AGENCY: "Admin",
+  DONOR: "Donor",
+  MANAGER: "Manager",
+  MOBILIZER: "Mobilizer",
+  PALIKA: "Palika",
 };
 
 export const CONTRACTS = {
-  RAHATTOKEN: 'RahatToken',
-  CVAPROJECT: 'CVAProject',
-  COMMUNITY: 'RahatCommunity',
-  DONOR: 'RahatDonor',
-  CLAIM: 'RahatClaim',
+  RAHATTOKEN: "RahatToken",
+  CVAPROJECT: "CVAProject",
+  COMMUNITY: "RahatCommunity",
+  DONOR: "RahatDonor",
+  CLAIM: "RahatClaim",
 };
 
-export const NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY = '1';
+export const NUMBER_OF_TOKEN_TO_ASSIGN_TO_BENEFICIARY = "1";
 
-export const MINIMUM_ETH_BALANCE_TO_CLAIM = '0.02';
+export const MINIMUM_ETH_BALANCE_TO_CLAIM = "0.02";
 
 export const CHARTDATATYPES = [
-  'hasInternetAccess',
-  'hasPhone',
-  'gender',
-  'bankAccountType',
-  'isBanked',
-  'phoneOwnedBy',
-  'simRegisteredUnder',
+  "hasInternetAccess",
+  "hasPhone",
+  "gender",
+  "bankAccountType",
+  "isBanked",
+  "phoneOwnedBy",
+  "simRegisteredUnder",
 ];
 
-export const DEXIE_DB_NAME = 'tayaba_vendor_pwa';
+export const DEXIE_DB_NAME = "tayaba_vendor_pwa";
