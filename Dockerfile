@@ -15,6 +15,7 @@ RUN yarn build
 FROM node:18.12.1-alpine3.17 AS runner
 WORKDIR /usr/src/app
 ENV NODE_ENV=production
+COPY --from=builder /opt/app/.env ./
 COPY --from=builder /opt/app/next.config.js ./
 COPY --from=builder /opt/app/public ./public
 COPY --from=builder /opt/app/.next ./.next
