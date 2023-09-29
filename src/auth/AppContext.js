@@ -122,7 +122,7 @@ function AppProvider({ children }) {
             isInitialized: true,
             user: localUser,
             keyData: localKey,
-            chainUrl: blockchainSettings.networkUrl,
+            chainUrl: blockchainSettings.rpcUrl,
             chainId: blockchainSettings.chainId,
             chainWebSocket: blockchainSettings.chainWebSocket,
 
@@ -207,4 +207,3 @@ function AppProvider({ children }) {
 }
 
 export { AppContext, AppProvider };
-
