@@ -36,6 +36,7 @@ jobs:
 
       - name: build and push web
         id: build-push-web
+        if: github.event_name == 'push'
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -43,3 +44,6 @@ jobs:
           push: true
           tags: esatya/vendor-app-pwa:main
           
+      - name: Build an Image
+        if: github.event_name == 'pull_request'
+        run: docker build -t myimage:${{ github.sha }} .
