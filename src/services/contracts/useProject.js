@@ -7,6 +7,7 @@ import { ethers } from 'ethers';
 export const useProject = () => {
   // let { serverAddress } = useAppContext();
   const contract = useContract(CONTRACTS.CVAPROJECT);
+  console.log('contract', contract);
   const communityContract = useContract(CONTRACTS.COMMUNITY);
 
   const contractWS = useContract(CONTRACTS.CVAPROJECT, {
@@ -76,6 +77,7 @@ export const useProject = () => {
         const decodedEventArgs = RahatClaim?.interface.decodeEventLog('ClaimCreated', event.data, event.topics);
         return decodedEventArgs?.claimId?.toNumber();
       } catch (err) {
+        console.log('err', err);
         handleContractError(err);
       }
     },
@@ -88,6 +90,7 @@ export const useProject = () => {
         const finalClaim = await RahatClaim?.claims(claimId);
         return finalClaim;
       } catch (err) {
+        console.log('err', err);
         handleContractError(err);
       }
     },

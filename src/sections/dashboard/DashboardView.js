@@ -236,7 +236,8 @@ const DashboardView = () => {
         if (beneficiaryBalance == 0) throwError('Not enough balance');
 
         // 6. Request token from beneficiary
-        const claimId = await requestTokenFromBeneficiary(walletAddress, beneficiaryBalance);
+        const claimId = await requestTokenFromBeneficiary(walletAddress, 1);
+        console.log(claimId);
 
         // 7. Check if claimId is returned
         if (claimId) {
