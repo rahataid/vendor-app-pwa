@@ -59,7 +59,7 @@ export default function Header({ onOpenNav }) {
           duration: theme.transitions.duration.shorter,
         }),
         ...(isDesktop && {
-          width: `calc(100% - ${NAV.W_DASHBOARD + 1}px)`,
+          // width: `calc(100% - ${NAV.W_DASHBOARD + 1}px)`,
           height: HEADER.H_DASHBOARD_DESKTOP,
           ...(isOffset && {
             height: HEADER.H_DASHBOARD_DESKTOP_OFFSET,
