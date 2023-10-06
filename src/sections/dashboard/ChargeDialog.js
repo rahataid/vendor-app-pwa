@@ -1,9 +1,10 @@
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import { LoadingButton } from '@mui/lab';
 import {
+  BottomNavigation,
+  BottomNavigationAction,
   Box,
   Button,
-  Card,
-  CardActions,
   Dialog,
   DialogActions,
   DialogContent,
@@ -81,7 +82,7 @@ const ChargeDialog = ({
 
   return (
     <Box>
-      <Card>
+      {/* <Card>
         <LoadingButton
           disabled={disabled}
           loading={fetchingChainData}
@@ -94,7 +95,28 @@ const ChargeDialog = ({
           <span>Charge Beneficiary</span>
         </LoadingButton>
         <CardActions>{footer}</CardActions>
-      </Card>
+      </Card> */}
+      <BottomNavigation
+        showLabels
+        value={'hello'}
+        onChange={(event, newValue) => {}}
+        style={{
+          height: 64,
+          boxShadow: '0px 0px 18px -6px rgba(0,0,0,0.75)',
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+        }}
+      >
+        <BottomNavigationAction
+          disabled={disabled}
+          label={fetchingChainData ? 'Loading...' : 'Charge Beneficiary'}
+          icon={<QrCodeScannerIcon color="primary" fontSize="large" />}
+          onClick={handleModal}
+          style={{ color: '#000', fontWeight: '700' }}
+        />
+      </BottomNavigation>
       <Dialog fullScreen fullWidth open={open} onClose={handleModal}>
         <DialogTitle>Charge Beneficiary</DialogTitle>
         {useQrCode && QRComponent}

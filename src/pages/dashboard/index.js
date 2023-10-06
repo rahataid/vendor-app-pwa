@@ -10,7 +10,7 @@ Dashboard.getLayout = (page) => <DashboardLayout pageTitle={PAGE_TITLE}>{page}</
 export default function Dashboard() {
   return (
     <DashboardProvider>
-      <Page title={PAGE_TITLE} nocard showTitleHeading={false}>
+      <Page title={PAGE_TITLE} nocard showTitleHeading={false} style={{ display: 'flex', flex: 1 }}>
         <DashboardView />
       </Page>
     </DashboardProvider>
