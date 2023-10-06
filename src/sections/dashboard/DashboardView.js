@@ -300,13 +300,19 @@ const DashboardView = () => {
   // if (fetchingChainData) return <LoadingScreen />;
 
   return (
-    <Stack spacing={SPACING.GRID_SPACING}>
-      <AlertInformation {...AlertInformationProps} />
-      <TokenInfo {...TokenInfoProps} />
-      {/* <MoreInfo /> */}
-      <ChargeDialog {...ChargeBeneficiaryModal} />
+    <Stack style={{ display: 'flex', flex: 1 }}>
+      <Stack spacing={SPACING.GRID_SPACING} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <Stack style={{ flex: 1 }}>
+          <AlertInformation {...AlertInformationProps} />
+          <TokenInfo {...TokenInfoProps} />
+        </Stack>
+        {/* <MoreInfo /> */}
+        <Stack style={{ alignSelf: 'flex-end', width: '100%' }}>
+          <ChargeDialog {...ChargeBeneficiaryModal} />
+        </Stack>
 
-      {transactions.length ? <Transactions transactions={transactions} /> : ''}
+        {transactions.length ? <Transactions transactions={transactions} /> : ''}
+      </Stack>
     </Stack>
   );
 };
