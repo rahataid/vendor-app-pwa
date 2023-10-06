@@ -37,7 +37,7 @@ export const useProject = () => {
     },
 
     getBeneficiaryBalance: async (walletAddress) => {
-      let balance = await contract?.beneficiaryClaims(walletAddress);
+      let balance = await contract?.beneficiaryClaims(walletAddress).catch(handleContractError);
       balance = balance?.toString();
       return balance;
     },
