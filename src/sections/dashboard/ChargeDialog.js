@@ -102,7 +102,7 @@ const ChargeDialog = ({
         onChange={(event, newValue) => {}}
         style={{
           height: 64,
-          boxShadow: '0px -5px 18px -6px rgba(0,0,0,0.75)',
+          boxShadow: '0px 0px 18px -6px rgba(0,0,0,0.75)',
           position: 'fixed',
           bottom: 0,
           left: 0,
