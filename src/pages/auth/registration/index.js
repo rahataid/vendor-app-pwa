@@ -1,5 +1,4 @@
 // import DashboardLayout from '@layouts/dashboard/DashboardLayout';
-import { Page } from '@components/page';
 import { AuthProvider } from '@contexts/auth';
 import { BasicAuthLayout } from '@layouts/auth';
 import { RegistrationView } from '@sections/auth/registration';
@@ -12,6 +11,10 @@ const Registration = () => (
   </AuthProvider>
 );
 
-Registration.getLayout = (page) => <BasicAuthLayout title={PAGE_TITLE}>{page}</BasicAuthLayout>;
+Registration.getLayout = (page) => (
+  <BasicAuthLayout title={PAGE_TITLE} showTitleHeading={true}>
+    {page}
+  </BasicAuthLayout>
+);
 
 export default Registration;
