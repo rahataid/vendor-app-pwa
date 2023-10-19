@@ -14,6 +14,7 @@ import { BeneficiaryService } from '@services/beneficiary';
 import { useProject } from '@services/contracts/useProject';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { mockedTransactions } from 'src/_mock/arrays/_transactions';
 import Transactions from './Transactions';
 
 const DashboardView = () => {
@@ -80,7 +81,7 @@ const DashboardView = () => {
     //   amount: t.params.find((param) => param.name === 'amount')?.value,
     // }));
 
-    setTransactions([]);
+    setTransactions(mockedTransactions);
     // setTransactions(formatted);
   }, []);
 

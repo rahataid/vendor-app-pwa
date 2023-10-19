@@ -35,10 +35,15 @@ export default function Header({ onOpenNav }) {
 
   const renderContent = (
     <>
-      <Typography color="black" variant="h6">
-        {'Rahat'}
+      <Stack>
+        <Stack sx={{ height: 40, width: 40 }}>
+          <img src={`/logo/icon-72.png`} width="100%" alt="Rahat" />
+        </Stack>
+      </Stack>
+      <Typography color="black" variant="h6" flex={1} justifyContent="center" textAlign="center">
+        {'Rahat Vendor App'}
       </Typography>
-      <Stack flexGrow={1} direction="row" alignItems="center" justifyContent="flex-end" spacing={{ xs: 0.5, sm: 1.5 }}>
+      <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={{ xs: 0.5, sm: 1.5 }}>
         {/* <NotificationsPopover /> */}
 
         <AccountPopover />

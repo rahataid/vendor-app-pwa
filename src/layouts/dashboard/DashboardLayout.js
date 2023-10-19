@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 // @mui
-import { Box } from '@mui/material';
 // auth
 // components
 //
 import AuthGuard from '@guards/AuthGuard';
+import { Box } from '@mui/material';
 import Main from './Main';
 import Header from './header';
 // ----------------------------------------------------------------------
@@ -29,11 +29,11 @@ export default function DashboardLayout({ pageTitle, children }) {
   const renderContent = () => (
     <>
       <Header onOpenNav={handleOpen} pageTitle={pageTitle} />
-
       <Box
         sx={{
           display: { lg: 'flex', xs: 'flex', sm: 'flex' },
           minHeight: { lg: 1, xs: 1, sm: 1 },
+          background: 'linear-gradient(180deg, #078DEE 0%, #fefefe 100%)',
         }}
       >
         {/* <BottomNavigation options={BOTTOM_NAVIGATION_OPTIONS} /> */}
@@ -42,7 +42,5 @@ export default function DashboardLayout({ pageTitle, children }) {
       </Box>
     </>
   );
-
-  // return <> {renderContent()}</>;
   return <AuthGuard> {renderContent()}</AuthGuard>;
 }

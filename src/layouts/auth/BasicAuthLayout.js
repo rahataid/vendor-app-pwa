@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 // @mui
-import { Typography, Stack, Box, Container } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 
 //
-import { APP_NAME, SPACING } from '@config';
 import { Page } from '@components/page';
+import { APP_NAME, SPACING } from '@config';
 import GuestGuard from '@guards/GuestGuard';
 
 // ----------------------------------------------------------------------

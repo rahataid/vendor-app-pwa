@@ -1,6 +1,7 @@
 import WalletExplorerButton from '@components/button/WalletExplorerButton';
+import TransparentCard from '@components/card/TransparentCard';
 import { SPACING } from '@config';
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Button, CardContent, CardHeader, Grid, Stack, Typography } from '@mui/material';
 import { PATH_TRANSACTIONS } from '@routes/paths';
 import moment from 'moment';
 import { useRouter } from 'next/router';
@@ -28,43 +29,77 @@ const Transactions = ({ transactions }) => {
   const router = useRouter();
 
   return (
-    <Card>
+    <TransparentCard>
       <CardHeader title="Transactions" />
-      <CardContent>
-        <Stack>
+      <CardContent style={{ paddingTop: 0 }}>
+        <Stack mt={4}>
           <Grid container spacing={SPACING.GRID_SPACING}>
             {transactions.map((transaction) => (
-              <Grid key={transaction.txHash} item xs={6} sm={6} md={4} lg={3}>
-                <Card>
-                  <CardContent>
-                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                      {moment.unix(transaction.timestamp).format('DD/MM/YYYY')}
-                    </Typography>
-                    <Typography variant="h5" component="div">
-                      {transaction.amount}
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                      {transaction?.name}
-                    </Typography>
+              <Grid item key={transaction?.txHash} xs={12}>
+                <TransparentCard>
+                  <CardContent sx={{ padding: '10px 16px !important' }}>
+                    <Grid container>
+                      <Grid
+                        item
+                        xs={7}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Grid container>
+                          <Grid item xs={12}>
+                            <Typography gutterBottom>{transaction?.name}</Typography>
+                          </Grid>
+
+                          <Grid item xs={12}>
+                            <Typography sx={{ fontSize: 13 }} color="text.secondary">
+                              {moment.unix(transaction.timestamp).format('DD/MM/YYYY')}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={5}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Grid container>
+                          <Grid item xs={12}>
+                            <Typography gutterBottom variant="h5" component="div" sx={{ textAlign: 'right' }}>
+                              {transaction?.amount ? `${transaction.amount}` : '-'}
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography sx={{ textAlign: 'right' }}>
+                              <WalletExplorerButton address={transaction.txHash} style={{ padding: 0 }} />
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
                   </CardContent>
-                  <CardActions>
-                    <WalletExplorerButton address={transaction.txHash} />
-                  </CardActions>
-                </Card>
-                <Divider />
+                </TransparentCard>
               </Grid>
             ))}
           </Grid>
-          <Button variant="outlined" color="secondary" onClick={() => router.push(PATH_TRANSACTIONS.root)}>
+        </Stack>
+        <Stack mt={3}>
+          <Button variant="outlined" color="primary" onClick={() => router.push(PATH_TRANSACTIONS.root)}>
             View All
           </Button>
         </Stack>
       </CardContent>
-    </Card>
+    </TransparentCard>
   );
 };
 
-Transactions.propType = {
+Transactions.propTypes = {
   transactions: PropTypes.array,
 };
 

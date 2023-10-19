@@ -1,11 +1,12 @@
 import SummaryCard from '@components/SummaryCard';
+import TransparentCard from '@components/card/TransparentCard';
 import { SPACING } from '@config';
-import { Card, CardContent, Grid } from '@mui/material';
+import { CardContent, Grid } from '@mui/material';
 import PropTypes from 'prop-types';
 // import { LoadingBalance } from './Loading';
 
 const TokenInfo = ({ chainData, fetchingChainData }) => (
-  <Card>
+  <TransparentCard>
     <CardContent>
       <Grid container direction="row" justifyContent="center" alignItems="flex-start" spacing={SPACING.GRID_SPACING}>
         <Grid item xs={6}>
@@ -27,7 +28,7 @@ const TokenInfo = ({ chainData, fetchingChainData }) => (
         </Grid>
       </Grid>
     </CardContent>
-  </Card>
+  </TransparentCard>
 );
 
 TokenInfo.propTypes = {

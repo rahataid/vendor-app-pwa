@@ -107,6 +107,9 @@ const ChargeDialog = ({
           bottom: 0,
           left: 0,
           width: '100%',
+          zIndex: 1101,
+          backdropFilter: 'blur(6px)',
+          backgroundColor: 'rgba(249, 250, 251, 0.8)',
         }}
       >
         <BottomNavigationAction
