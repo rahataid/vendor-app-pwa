@@ -7,7 +7,7 @@ import { ethers } from 'ethers';
 export const useProject = () => {
   // let { serverAddress } = useAppContext();
   const contract = useContract(CONTRACTS.CVAPROJECT);
-  console.log('contract', contract);
+
   const communityContract = useContract(CONTRACTS.COMMUNITY);
 
   const contractWS = useContract(CONTRACTS.CVAPROJECT, {
@@ -20,6 +20,7 @@ export const useProject = () => {
   const { handleContractError } = useErrorHandler();
 
   const allContractsLoaded = contract && communityContract && RahatToken ? true : false;
+  // console.log('contract, all contractsLoaded', contract, allContractsLoaded);
   return {
     contractWS,
     contract,

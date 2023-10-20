@@ -1,19 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Card, Container as MuiContainer, IconButton, Stack } from '@mui/material';
-import Iconify from '@components/iconify';
-import { PATH_DASHBOARD } from '@routes/paths';
 import Headerbreadcrumbs from '@components/HeaderBreadcrumbs';
+import Iconify from '@components/iconify';
 import { useSettingsContext } from '@components/settings';
 import { SPACING } from '@config';
+import { Card, IconButton, Container as MuiContainer, Stack } from '@mui/material';
+import { PATH_DASHBOARD } from '@routes/paths';
+import PropTypes from 'prop-types';
 
 const ContainerComponent = ({ children, title, action, breadcrumbLinks, nocard = false, showTitleHeading = true }) => {
   const { themeStretch } = useSettingsContext();
 
   return (
-    <>
+    <Stack style={{ height: '100%', flex: 1 }}>
       {' '}
-      <MuiContainer maxWidth={themeStretch ? false : 'lg'}>
+      <MuiContainer maxWidth={themeStretch ? false : 'lg'} style={{ flex: 1, display: 'flex' }}>
         <Headerbreadcrumbs
           heading={
             showTitleHeading &&
@@ -35,9 +34,9 @@ const ContainerComponent = ({ children, title, action, breadcrumbLinks, nocard =
           links={[{ name: '', href: PATH_DASHBOARD.root }, ...breadcrumbLinks]}
           action={action}
         />
-        {nocard ? children : <Card sx={{ p: 2 }}>{children}</Card>}
+        {nocard ? <Stack style={{ flex: 1 }}>{children}</Stack> : <Card sx={{ p: 2 }}>{children}</Card>}
       </MuiContainer>
-    </>
+    </Stack>
   );
 };
 ContainerComponent.propTypes = {

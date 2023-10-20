@@ -9,9 +9,9 @@ import { useAppContext } from 'src/auth/useAppContext';
 import AlertInformation from './AlertInformation';
 import ChargeDialog from './ChargeDialog';
 // import Transactions from './Transactions';
+import { useProjectContext } from '@contexts/projects';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { BeneficiaryService } from '@services/beneficiary';
-import { useProject } from '@services/contracts/useProject';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { mockedTransactions } from 'src/_mock/arrays/_transactions';
@@ -21,9 +21,6 @@ const DashboardView = () => {
   const snackBar = useSnackbar();
   const router = useRouter();
   const { getVendorInfo, vendorInfo } = useDashboardContext();
-  const { user, setClaimId, wallet, addUser, hasEnoughEth } = useAppContext();
-  const { handleError, throwError } = useErrorHandler();
-
   const {
     getVendorAllowance,
     pendingWheelsToAccept,
@@ -36,7 +33,9 @@ const DashboardView = () => {
     requestTokenFromBeneficiary,
     isVendorApproved,
     getBeneficiaryBalance,
-  } = useProject();
+  } = useProjectContext();
+  const { user, setClaimId, wallet, addUser, hasEnoughEth } = useAppContext();
+  const { handleError, throwError } = useErrorHandler();
 
   const [chargeBeneficiaryModal, setChargeBeneficiaryModal] = useState(false);
   // const [chargeBeneficiaryInput, setChargeBeneficiaryInput] = useState('');
@@ -301,7 +300,7 @@ const DashboardView = () => {
   // if (fetchingChainData) return <LoadingScreen />;
 
   return (
-    <Stack style={{ display: 'flex', flex: 1 }}>
+    <Stack style={{ display: 'flex', flex: 1, width: '100%' }}>
       <Stack spacing={SPACING.GRID_SPACING} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <Stack style={{ flex: 1 }}>
           <AlertInformation {...AlertInformationProps} />
