@@ -7,7 +7,6 @@ import { useDashboardContext } from '@contexts/dashboard';
 import { useCallback, useEffect, useState } from 'react';
 import { useAppContext } from 'src/auth/useAppContext';
 import AlertInformation from './AlertInformation';
-import ChargeDialog from './ChargeDialog';
 // import Transactions from './Transactions';
 import { useProjectContext } from '@contexts/projects';
 import { useErrorHandler } from '@hooks/useErrorHandler';
@@ -302,14 +301,14 @@ const DashboardView = () => {
   return (
     <Stack style={{ display: 'flex', flex: 1, width: '100%' }}>
       <Stack spacing={SPACING.GRID_SPACING} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-        <Stack style={{ flex: 1 }}>
+        <Stack>
           <AlertInformation {...AlertInformationProps} />
           <TokenInfo {...TokenInfoProps} />
         </Stack>
         {/* <MoreInfo /> */}
-        <Stack style={{ alignSelf: 'flex-end', width: '100%' }}>
+        {/* <Stack style={{ flex: 1, alignSelf: 'flex-end', width: '100%' }}>
           <ChargeDialog {...ChargeBeneficiaryModal} />
-        </Stack>
+        </Stack> */}
 
         {transactions.length ? <Transactions transactions={transactions} /> : ''}
       </Stack>
