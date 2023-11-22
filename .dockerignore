@@ -1,5 +1,13 @@
-node_modules
-.git
 .results
 scripts
-*Dockerfile*
+.github/
+.git/
+.next/
+.vscode
+.dockerignore
+.gitignore
+.eslintignore
+.eslintrc
+.prettierrc
+Dockerfile
+*.md
