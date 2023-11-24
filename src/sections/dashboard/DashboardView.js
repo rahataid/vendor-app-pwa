@@ -9,6 +9,7 @@ import { useAppContext } from 'src/auth/useAppContext';
 import AlertInformation from './AlertInformation';
 import ChargeDialog from './ChargeDialog';
 // import Transactions from './Transactions';
+import { useChainData } from '@hooks/contracts/useChainData';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { BeneficiaryService } from '@services/beneficiary';
 import { useProject } from '@services/contracts/useProject';
@@ -35,6 +36,7 @@ const DashboardView = () => {
     requestTokenFromBeneficiary,
     isVendorApproved,
     getBeneficiaryBalance,
+    getProjectBalance
   } = useProject();
 
   const [chargeBeneficiaryModal, setChargeBeneficiaryModal] = useState(false);
@@ -53,17 +55,20 @@ const DashboardView = () => {
     projectLocked: null,
     isApproved: false,
   });
+  
+  const allowance = useChainData("CVAProject-getProjectBalance", getProjectBalance);
+
 
   const getChainData = useCallback(async () => {
     setFetchingChainData(true);
     if (!CVAProjectContract || !communityContract || !RahatToken) return;
-    const allowance = await getVendorAllowance(user?.walletAddress);
+
     const pendingWheels = await pendingWheelsToAccept(user?.walletAddress);
     const balance = await getBalance(user?.walletAddress);
     const projectLocked = await isProjectLocked();
     const isApproved = await isVendorApproved(user?.walletAddress);
 
-    setChainData({ allowance, pendingWheelsToAccept: pendingWheels, disbursed: balance, projectLocked, isApproved });
+    setChainData({ pendingWheelsToAccept: pendingWheels, disbursed: balance, projectLocked, isApproved });
     setFetchingChainData(false);
   }, [chargeBeneficiaryModal, acceptingAllowance, user, chainData, CVAProjectContract, communityContract, RahatToken]);
 
@@ -131,7 +136,8 @@ const DashboardView = () => {
 
   const TokenInfoProps = {
     fetchingChainData,
-    chainData,
+    chainData : {allowance, disbursed: chainData?.disbursed},
+    allowance,
     vendorInfo,
   };
 
