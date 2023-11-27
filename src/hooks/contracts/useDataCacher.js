@@ -1,10 +1,10 @@
 import db from '@utils/indexdb';
 import { useCallback, useEffect, useState } from 'react';
 
-export const useChainData = (name, chainFn, params=[]) => {
+export const useDataCacher = (name, chainFn, params=[], options={loadbyDefault:true}) => {
   const [chainData, setChainData] = useState(null);
 
-  const executeChainFn = useCallback(async () => {
+  const getData = useCallback(async () => {
     let data = await db.get("chainData-" + name);
     if (data) {
       setChainData(data);
@@ -20,8 +20,8 @@ export const useChainData = (name, chainFn, params=[]) => {
   }, [name, chainFn]);
 
   useEffect(() => {
-    executeChainFn();
-  }, [executeChainFn]);
+    if(options.loadbyDefault) getData();
+  }, [getData]);
 
-  return chainData;
+  return [chainData, getData];
 };
