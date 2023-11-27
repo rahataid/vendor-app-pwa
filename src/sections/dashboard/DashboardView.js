@@ -134,10 +134,10 @@ const DashboardView = () => {
     hasEnoughEth,
     open: chargeBeneficiaryModal,
     handleModal: () => {
-      // if (!chainData.projectLocked) {
-      //   snackBar.enqueueSnackbar('Project is not locked', { variant: 'error' });
-      //   return;
-      // }
+      if (!projectLocked) {
+        snackBar.enqueueSnackbar('Project is not locked', { variant: 'error' });
+        return;
+      }
       setChargeBeneficiaryModal((prev) => !prev);
     },
     // load the charging beneficiary component
@@ -201,12 +201,17 @@ const DashboardView = () => {
     //   }
     // },
     // handle phone number submit
-    handleSubmit: async (chargeBeneficiaryInput) => {
+    handleSubmit: async (chargeBeneficiaryInput, inputAmount) => {
       // This code is used to charge a beneficiary
       // The beneficiary is the one who will be charged
       // The claimId is the claimId of the beneficiary
 
       try {
+        if (!inputAmount) {
+          snackBar.enqueueSnackbar('Please enter amount to charge', { variant: 'error' });
+          return;
+        }
+
         // 1. Set charging beneficiary to true
         setChargingBeneficiary(true);
 
@@ -216,6 +221,7 @@ const DashboardView = () => {
         } = await BeneficiaryService.getBeneficiary({ phone: chargeBeneficiaryInput });
 
         // 3. Check if beneficiary exists
+        
         if (beneficiaryData.length === 0) {
           setChargingBeneficiary(false);
           snackBar.enqueueSnackbar('Beneficiary does not exist', { variant: 'error' });
@@ -230,7 +236,7 @@ const DashboardView = () => {
         if (beneficiaryBalance == 0) throwError('Not enough balance');
 
         // 6. Request token from beneficiary
-        const claimId = await requestTokenFromBeneficiary(walletAddress, 1);
+        const claimId = await requestTokenFromBeneficiary(walletAddress, inputAmount);
         console.log(claimId);
 
         // 7. Check if claimId is returned
