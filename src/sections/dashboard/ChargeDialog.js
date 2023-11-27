@@ -1,4 +1,4 @@
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import { LoadingButton } from '@mui/lab';
 import {
   BottomNavigation,
@@ -31,11 +31,16 @@ const ChargeDialog = ({
   handleSubmitQr = () => {},
 }) => {
   const [inputPhone, setInputPhone] = useState('');
+  const [inputAmount, setInputAmount] = useState('');
   const [inputQr, setInputQr] = useState('');
   const [useQrCode, setUseQrCode] = useState(false);
 
   const handleInput = (e) => {
     setInputPhone(e.target.value);
+  };
+
+  const handleAmount = (e) => {
+    setInputAmount(e.target.value);
   };
 
   const handleInputQr = (e) => {
@@ -45,7 +50,7 @@ const ChargeDialog = ({
   const PhoneComponent = (
     <DialogContent>
       <DialogContentText>
-        You are about to send tokens to this beneficiary. Please enter phone number of the beneficiary.
+        You are about to charge this beneficiary. Please enter phone number of the beneficiary.
       </DialogContentText>
       <TextField
         autoFocus
@@ -57,23 +62,44 @@ const ChargeDialog = ({
         value={inputPhone}
         onChange={handleInput}
       />
+      <TextField
+        type='number'
+        margin="normal"
+        id="inputAmount"
+        label="Amount to Charge"
+        fullWidth
+        variant="standard"
+        value={inputAmount}
+        onChange={handleAmount}
+      />
     </DialogContent>
   );
 
   const QRComponent = (
     <DialogContent>
       <DialogContentText>
-        You are about to send tokens to this beneficiary. Please enter the QR code of the beneficiary.
+        You are about to charge this beneficiary. Please enter the wallet address of the beneficiary.
       </DialogContentText>
       <TextField
         autoFocus
         margin="dense"
         id="walletAddress2"
-        label="Beneficiary QR Code"
+        label="Beneficiary Wallet Address"
         fullWidth
         variant="standard"
         value={inputQr}
         onChange={handleInputQr}
+      />
+
+      <TextField
+        type='number'
+        margin="normal"
+        id="inputAmount"
+        label="Amount to Charge"
+        fullWidth
+        variant="standard"
+        value={inputAmount}
+        onChange={handleAmount}
       />
       {/* <QRCode inputValue={inputValueQr} handleInput={handleInputQr} /> */}
       {/* <QRScanner loading={loading} onResult={handleQRScanner} scanData={inputValue} /> */}
@@ -112,11 +138,12 @@ const ChargeDialog = ({
         <BottomNavigationAction
           disabled={disabled}
           label={fetchingChainData ? 'Loading...' : 'Charge Beneficiary'}
-          icon={<QrCodeScannerIcon color="primary" fontSize="large" />}
+          icon={<CurrencyExchangeIcon color="primary" fontSize="medium" />}
           onClick={handleModal}
           style={{ color: '#000', fontWeight: '700' }}
         />
       </BottomNavigation>
+
       <Dialog fullScreen fullWidth open={open} onClose={handleModal}>
         <DialogTitle>Charge Beneficiary</DialogTitle>
         {useQrCode && QRComponent}
@@ -125,7 +152,7 @@ const ChargeDialog = ({
 
         <DialogActions>
           <Button onClick={() => setUseQrCode((prev) => !prev)}>
-            {useQrCode ? 'Enter Phone Number' : 'Use QR Code'}
+            {useQrCode ? 'Use Phone' : 'Use Wallet'}
           </Button>
           <Button variant="outlined" onClick={handleModal}>
             Cancel
@@ -135,7 +162,7 @@ const ChargeDialog = ({
               disabled={!inputQr}
               loading={loading}
               variant={'contained'}
-              onClick={() => handleSubmitQr(inputQr)}
+              onClick={() => handleSubmitQr(inputQr, inputAmount)}
             >
               Charge QR
             </LoadingButton>
@@ -144,7 +171,7 @@ const ChargeDialog = ({
               disabled={!inputPhone}
               loading={loading}
               variant={'contained'}
-              onClick={() => handleSubmit(inputPhone)}
+              onClick={() => handleSubmit(inputPhone, inputAmount)}
             >
               Charge PHONE
             </LoadingButton>
