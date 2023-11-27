@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // @mui
+import { AppBar, Stack, Toolbar, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Stack, AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 // utils
 import { bgBlur } from '../../../utils/cssStyles';
 // hooks
@@ -49,7 +49,7 @@ export default function Header({ onOpenNav }) {
   return (
     <AppBar
       sx={{
-        boxShadow: 'none',
+        boxShadow: '0px 0px 18px -6px rgba(0,0,0,0.75)',
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,
         ...bgBlur({
@@ -59,7 +59,7 @@ export default function Header({ onOpenNav }) {
           duration: theme.transitions.duration.shorter,
         }),
         ...(isDesktop && {
-          width: `calc(100% - ${NAV.W_DASHBOARD + 1}px)`,
+          // width: `calc(100% - ${NAV.W_DASHBOARD + 1}px)`,
           height: HEADER.H_DASHBOARD_DESKTOP,
           ...(isOffset && {
             height: HEADER.H_DASHBOARD_DESKTOP_OFFSET,

@@ -4,7 +4,7 @@ import { Card, CardContent, Grid } from '@mui/material';
 import PropTypes from 'prop-types';
 // import { LoadingBalance } from './Loading';
 
-const TokenInfo = ({ chainData, fetchingChainData }) => (
+const TokenInfo = ({ chainData, allowance, fetchingChainData }) => (
   <Card>
     <CardContent>
       <Grid container direction="row" justifyContent="center" alignItems="flex-start" spacing={SPACING.GRID_SPACING}>

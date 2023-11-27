@@ -7,6 +7,7 @@ import { PATH_DASHBOARD } from './routes/paths';
 export const DEBUG_MODE = process.env.NODE_ENV === 'development' ? process.env.NEXT_PUBLIC_DEBUG_MODE : false;
 export const HOST_API = process.env.NEXT_PUBLIC_HOST_API || '';
 export const RAHAT_BACKEND = process.env.NEXT_PUBLIC_RAHAT_BACKEND_API || '';
+export const RUMSAN_ASSETS_URL = process.env.NEXT_PUBLIC_RUMSAN_ASSETS_URL || '';
 // export const TAYABA_BACKEND = DEBUG_MODE
 //   ? process.env.NEXT_PUBLIC_TAYABA_BACKEND_PROXY
 //   : process.env.NEXT_PUBLIC_TAYABA_BACKEND;

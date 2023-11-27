@@ -1,26 +1,20 @@
 import { CONTRACTS } from '@config';
-import { useContract } from '@hooks/contracts';
-// import { useAppContext } from 'src/auth/useAppContext';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { ethers } from 'ethers';
+import { useAppContext } from 'src/auth/useAppContext';
 
 export const useProject = () => {
   // let { serverAddress } = useAppContext();
-  const contract = useContract(CONTRACTS.CVAPROJECT);
-  const communityContract = useContract(CONTRACTS.COMMUNITY);
-
-  const contractWS = useContract(CONTRACTS.CVAPROJECT, {
-    isWebsocket: true,
-  });
-
-  const RahatToken = useContract(CONTRACTS.RAHATTOKEN);
-  const RahatClaim = useContract(CONTRACTS.CLAIM);
+  const {contractsFn, contracts} = useAppContext();
+  const contract = contractsFn?.[CONTRACTS.CVAPROJECT];
+  const communityContract = contractsFn?.[CONTRACTS.COMMUNITY];
+  const RahatToken = contractsFn?.[CONTRACTS.RAHATTOKEN];
+  const RahatClaim = contractsFn?.[CONTRACTS.CLAIM];
 
   const { handleContractError } = useErrorHandler();
 
   const allContractsLoaded = contract && communityContract && RahatToken ? true : false;
   return {
-    contractWS,
     contract,
     communityContract,
     RahatToken,
@@ -28,6 +22,11 @@ export const useProject = () => {
 
     // project functions
     isProjectLocked: () => contract?.isLocked(),
+
+    getProjectBalance: async () => {
+      let balance = await RahatToken?.balanceOf(contracts[CONTRACTS.CVAPROJECT]);
+      return balance?.toString();
+    },
 
     getBalance: async (walletAddress) => {
       // (await RahatToken?.balanceOf(walletAddress))?.toNumber();
@@ -76,6 +75,7 @@ export const useProject = () => {
         const decodedEventArgs = RahatClaim?.interface.decodeEventLog('ClaimCreated', event.data, event.topics);
         return decodedEventArgs?.claimId?.toNumber();
       } catch (err) {
+        console.log('err', err);
         handleContractError(err);
       }
     },
@@ -88,6 +88,7 @@ export const useProject = () => {
         const finalClaim = await RahatClaim?.claims(claimId);
         return finalClaim;
       } catch (err) {
+        console.log('err', err);
         handleContractError(err);
       }
     },

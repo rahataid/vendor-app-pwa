@@ -8,7 +8,6 @@ import { Box } from '@mui/material';
 import AuthGuard from '@guards/AuthGuard';
 import Main from './Main';
 import Header from './header';
-
 // ----------------------------------------------------------------------
 
 DashboardLayout.propTypes = {
@@ -33,13 +32,13 @@ export default function DashboardLayout({ pageTitle, children }) {
 
       <Box
         sx={{
-          display: { lg: 'flex' },
-          minHeight: { lg: 1 },
+          display: { lg: 'flex', xs: 'flex', sm: 'flex' },
+          minHeight: { lg: 1, xs: 1, sm: 1 },
         }}
       >
         {/* <BottomNavigation options={BOTTOM_NAVIGATION_OPTIONS} /> */}
 
-        <Main>{children}</Main>
+        <Main sx={{ display: 'flex', flex: 1, minHeight: { lg: 1, xs: 1, sm: 1 } }}>{children}</Main>
       </Box>
     </>
   );

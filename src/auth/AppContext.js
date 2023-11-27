@@ -14,7 +14,7 @@ import {
   saveCurrentUser,
   saveKey,
 } from '@utils/sessionManager';
-import { ethers, providers } from 'ethers';
+import { Contract, ethers, providers } from 'ethers';
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +30,7 @@ const initialState = {
   chainWebSocket: null,
   claimToken: null,
   contracts: null,
+  contractsFn: null,
   serverAddress: null,
   addresses: null,
   wallet: null,
@@ -85,8 +86,10 @@ function AppProvider({ children }) {
       }, {});
 
       const blockchainSettings = blockchain?.data?.rows[0]?.value;
+      const contractDetails = Object.entries(contractAddress.data.rows[0].value).map(([acc, d], i) => ({name: acc, address: d.address, abi: d.abi}));
 
       return {
+        contractDetails,
         contractAddresses,
         blockchainSettings,
       };
@@ -106,18 +109,25 @@ function AppProvider({ children }) {
         let wallet = await getWallet();
 
         if (wallet) {
-          const { blockchainSettings, contractAddresses } = await getAppSettings();
+          const { blockchainSettings, contractAddresses, contractDetails } = await getAppSettings();
           wallet = wallet?.connect(
             new providers.StaticJsonRpcProvider(blockchainSettings?.rpcUrl, {
               chainId: blockchainSettings?.chainId,
             })
           );
+
+          const contractsFn =  contractDetails.reduce((acc, d) => {
+            acc[d.name] = new Contract(d.address, d.abi, wallet);
+            return acc;
+          }, {});
+          
           const wei = await wallet?.provider?.getBalance(wallet?.address);
           const ethBalance = +ethers.utils.formatEther(wei);
           const hasEnoughEth = ethBalance >= +MINIMUM_ETH_BALANCE_TO_CLAIM;
 
           setAppState((prev) => ({
             ...prev,
+            contractsFn,
             isAuthenticated: true,
             isInitialized: true,
             user: localUser,
@@ -207,3 +217,4 @@ function AppProvider({ children }) {
 }
 
 export { AppContext, AppProvider };
+

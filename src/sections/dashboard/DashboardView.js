@@ -9,6 +9,7 @@ import { useAppContext } from 'src/auth/useAppContext';
 import AlertInformation from './AlertInformation';
 import ChargeDialog from './ChargeDialog';
 // import Transactions from './Transactions';
+import { useDataCacher } from '@hooks/contracts/useDataCacher';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { BeneficiaryService } from '@services/beneficiary';
 import { useProject } from '@services/contracts/useProject';
@@ -35,6 +36,7 @@ const DashboardView = () => {
     requestTokenFromBeneficiary,
     isVendorApproved,
     getBeneficiaryBalance,
+    getProjectBalance
   } = useProject();
 
   const [chargeBeneficiaryModal, setChargeBeneficiaryModal] = useState(false);
@@ -43,30 +45,29 @@ const DashboardView = () => {
   const [chargingBeneficiary, setChargingBeneficiary] = useState(false);
 
   const [acceptingAllowance, setAcceptingAllowance] = useState(false);
-  const [fetchingChainData, setFetchingChainData] = useState(true);
+  const [fetchingChainData, setFetchingChainData] = useState(false);
   const [transactions, setTransactions] = useState([]);
+  
+  const dataCacherOptions = {loadbyDefault:false};
 
-  const [chainData, setChainData] = useState({
-    allowance: '-',
-    pendingWheelsToAccept: '-',
-    disbursed: '-',
-    projectLocked: null,
-    isApproved: false,
-  });
+  const [allowance, getAllowance] = useDataCacher("CVAProject-getVendorAllowance", getVendorAllowance, [user?.walletAddress], {loadbyDefault:false});
+  const [pendingWheels, getPendingWheels] = useDataCacher("CVAProject-pendingWheelsToAccept", pendingWheelsToAccept, [user?.walletAddress], dataCacherOptions);
+  const [balance, getVendorBalance] = useDataCacher("CVAProject-getBalance", getBalance, [user?.walletAddress], dataCacherOptions);
+  const [projectLocked, getProjectStatus] = useDataCacher("CVAProject-isProjectLocked", isProjectLocked, [], dataCacherOptions);
+  const [isApproved, checkVendorStatus] = useDataCacher("CVAProject-isVendorApproved", isVendorApproved, [user?.walletAddress], dataCacherOptions);
 
-  const getChainData = useCallback(async () => {
+  const refreshChainData = useCallback(async () => {
     setFetchingChainData(true);
-    if (!CVAProjectContract || !communityContract || !RahatToken) return;
-    const allowance = await getVendorAllowance(user?.walletAddress);
-    const pendingWheels = await pendingWheelsToAccept(user?.walletAddress);
-    const balance = await getBalance(user?.walletAddress);
-    const projectLocked = await isProjectLocked();
-    const isApproved = await isVendorApproved(user?.walletAddress);
+    Promise.all([
+      getAllowance(),
+      getPendingWheels(),
+      getVendorBalance(),
+      getProjectStatus(),
+      checkVendorStatus(),
+    ]).then(() => setFetchingChainData(false));
+  }, [user?.walletAddress]);
 
-    setChainData({ allowance, pendingWheelsToAccept: pendingWheels, disbursed: balance, projectLocked, isApproved });
-    setFetchingChainData(false);
-  }, [chargeBeneficiaryModal, acceptingAllowance, user, chainData, CVAProjectContract, communityContract, RahatToken]);
-
+//    setChainData({ pendingWheelsToAccept: pendingWheels, disbursed: balance, projectLocked, isApproved });
   const getVendorTransactions = useCallback(async () => {
     // const transactions = await ChainCacheService.listTransactionsByVendor(
     //   contracts[CONTRACTS.CVAPROJECT],
@@ -85,6 +86,7 @@ const DashboardView = () => {
   }, []);
 
   useEffect(() => {
+    refreshChainData();
     getVendorTransactions();
   }, [user?.walletAddress]);
 
@@ -101,37 +103,29 @@ const DashboardView = () => {
     }
   }, [user, vendorInfo?.walletAddress]);
 
-  useEffect(() => {
-    const init = async () => {
-      if (user?.walletAddress && CVAProjectContract && communityContract && RahatToken) {
-        await getChainData();
-      }
-    };
-    init();
-  }, [user?.walletAddress, CVAProjectContract, communityContract, RahatToken]);
-
   const AlertInformationProps = {
     fetchingChainData,
     hasEnoughEth,
     acceptAllowance: async () => {
       try {
         setAcceptingAllowance(true);
-        await acceptH2OByVendors(chainData.pendingWheelsToAccept);
+        await acceptH2OByVendors(pendingWheels);
         setAcceptingAllowance(false);
-        getChainData();
+        refreshChainData();
       } catch (err) {
         handleError(err);
         setAcceptingAllowance(false);
       }
     },
-    pendingTokens: chainData.pendingWheelsToAccept,
-    isVendorApproved: chainData?.isApproved,
+    pendingTokens: pendingWheels,
+    isVendorApproved: isApproved,
     acceptingAllowance,
   };
 
   const TokenInfoProps = {
     fetchingChainData,
-    chainData,
+    chainData : {allowance, disbursed: balance},
+    allowance,
     vendorInfo,
   };
 
@@ -150,7 +144,7 @@ const DashboardView = () => {
     loading: chargingBeneficiary,
     // disable the component if the vendor is not approved or the project is locked
     // disabled: false,
-    disabled: !chainData?.isApproved || !hasEnoughEth,
+    disabled: !isApproved || !hasEnoughEth,
     // set the input value to the charge beneficiary input
     // inputValue: chargeBeneficiaryInput,
     // set the input to the charge beneficiary input
@@ -236,7 +230,8 @@ const DashboardView = () => {
         if (beneficiaryBalance == 0) throwError('Not enough balance');
 
         // 6. Request token from beneficiary
-        const claimId = await requestTokenFromBeneficiary(walletAddress, beneficiaryBalance);
+        const claimId = await requestTokenFromBeneficiary(walletAddress, 1);
+        console.log(claimId);
 
         // 7. Check if claimId is returned
         if (claimId) {
@@ -299,13 +294,19 @@ const DashboardView = () => {
   // if (fetchingChainData) return <LoadingScreen />;
 
   return (
-    <Stack spacing={SPACING.GRID_SPACING}>
-      <AlertInformation {...AlertInformationProps} />
-      <TokenInfo {...TokenInfoProps} />
-      {/* <MoreInfo /> */}
-      <ChargeDialog {...ChargeBeneficiaryModal} />
+    <Stack style={{ display: 'flex', flex: 1 }}>
+      <Stack spacing={SPACING.GRID_SPACING} style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+        <Stack style={{ flex: 1 }}>
+          <AlertInformation {...AlertInformationProps} />
+          <TokenInfo {...TokenInfoProps} />
+        </Stack>
+        {/* <MoreInfo /> */}
+        <Stack style={{ alignSelf: 'flex-end', width: '100%' }}>
+          <ChargeDialog {...ChargeBeneficiaryModal} />
+        </Stack>
 
-      {transactions.length ? <Transactions transactions={transactions} /> : ''}
+        {transactions.length ? <Transactions transactions={transactions} /> : ''}
+      </Stack>
     </Stack>
   );
 };
