@@ -1,27 +1,20 @@
 import { CONTRACTS } from '@config';
-import { useContract } from '@hooks/contracts';
-// import { useAppContext } from 'src/auth/useAppContext';
 import { useErrorHandler } from '@hooks/useErrorHandler';
 import { ethers } from 'ethers';
+import { useAppContext } from 'src/auth/useAppContext';
 
 export const useProject = () => {
   // let { serverAddress } = useAppContext();
-  const contract = useContract(CONTRACTS.CVAPROJECT);
-  console.log('contract', contract);
-  const communityContract = useContract(CONTRACTS.COMMUNITY);
-
-  const contractWS = useContract(CONTRACTS.CVAPROJECT, {
-    isWebsocket: true,
-  });
-
-  const RahatToken = useContract(CONTRACTS.RAHATTOKEN);
-  const RahatClaim = useContract(CONTRACTS.CLAIM);
+  const {contractsFn, contracts} = useAppContext();
+  const contract = contractsFn?.[CONTRACTS.CVAPROJECT];
+  const communityContract = contractsFn?.[CONTRACTS.COMMUNITY];
+  const RahatToken = contractsFn?.[CONTRACTS.RAHATTOKEN];
+  const RahatClaim = contractsFn?.[CONTRACTS.CLAIM];
 
   const { handleContractError } = useErrorHandler();
 
   const allContractsLoaded = contract && communityContract && RahatToken ? true : false;
   return {
-    contractWS,
     contract,
     communityContract,
     RahatToken,
@@ -29,6 +22,11 @@ export const useProject = () => {
 
     // project functions
     isProjectLocked: () => contract?.isLocked(),
+
+    getProjectBalance: async () => {
+      let balance = await RahatToken?.balanceOf(contracts[CONTRACTS.CVAPROJECT]);
+      return balance?.toString();
+    },
 
     getBalance: async (walletAddress) => {
       // (await RahatToken?.balanceOf(walletAddress))?.toNumber();
